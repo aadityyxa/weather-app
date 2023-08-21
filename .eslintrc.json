@@ -11,6 +11,8 @@
     },
     "rules": {
         "no-console":"off",
-        "linebreak-style": 0
-    }
+        "linebreak-style": 0,
+        "indent":"off"
+    },
+    "ignorePatterns":["main.js"]
 }
