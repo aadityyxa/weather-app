@@ -39,6 +39,7 @@ body{
     display:flex; 
     flex-direction: column;
     justify-content:flex-start;
+    gap:2rem;
     align-items: center;
 }
 
@@ -72,5 +73,16 @@ label{
 input{
     padding:4px;
     width:50%;
+}
+
+.card{
+    background:#fff;
+    padding:24px;
+    border-radius:24px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    gap:1rem;
+
 }
 

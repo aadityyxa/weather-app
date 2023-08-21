@@ -3,10 +3,13 @@ import './style.css';
 const form = document.querySelector('form');
 const inputField = document.querySelector('input');
 const myAPIKey = '30356c336ec44fd79a9144540232108';
+const weatherCard = document.querySelector('.card');
 const weatherCardHeading = document.querySelector('.weather-card-heading');
 const weatherConditionText = document.querySelector('.weather-condition-text');
 const errorText = document.querySelector('.error-text');
 // const weatherDescription = document.querySelector('weather-description');
+
+weatherCard.style.display = 'none';
 
 inputField.addEventListener('input', () => {
     if (inputField.validity.patternMismatch) {
@@ -16,20 +19,26 @@ inputField.addEventListener('input', () => {
     }
 });
 
+function displayData(obj) {
+    errorText.style.display = 'none';
+    weatherCard.style.display = 'flex';
+    weatherCardHeading.textContent = `weather in ${obj.location.name}`;
+    weatherConditionText.textContent = obj.forecast.forecastday[0].day.condition.text;
+}
+
 async function fetchData() {
     try {
-        errorText.textContent = '';
         const response = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${myAPIKey}&q=${inputField.value}&days=1&aqi=no&alerts=yes`);
-        if (!response.ok) {
-            if (response.status === 400) {
-                throw new Error('No matching location found.');
-            }
-        }
         const weatherData = await response.json();
-        weatherCardHeading.textContent = `weather in ${inputField.value}`;
-        weatherConditionText.textContent = weatherData.forecast.forecastday[0].day.condition.text;
-    // console.log(weatherData.forecast.forecastday[0].day.condition.text);
+
+        if (weatherData.error) {
+            throw new Error(weatherData.error.message);
+        }
+
+        displayData(weatherData);
     } catch (err) {
+        weatherCard.style.display = 'none';
+        errorText.style.display = 'block';
         errorText.textContent = err;
     }
 }
