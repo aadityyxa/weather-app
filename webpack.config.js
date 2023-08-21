@@ -1,25 +1,25 @@
-var path = require('path'); 
+const path = require('path');
 
 module.exports = {
-    mode:'development', 
-    entry: {
-        main: './src/index.js',
-    },
-    output: {
-        filename: '[name].js',
-        path:path.resolve(__dirname, 'dist'),
+  mode: 'development',
+  entry: {
+    main: './src/index.js',
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
 
-    }, 
-    devtool : 'inline-source-map',
-    devServer: {
-        static: './dist',
-    },
-    module: {
+  },
+  devtool: 'inline-source-map',
+  devServer: {
+    static: './dist',
+  },
+  module: {
     rules: [
-                {   
-                    test: /\.css$/i,
-                    use: ['style-loader', 'css-loader'],
-            },
-        ],
-    },
-}
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+};
