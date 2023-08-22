@@ -7,6 +7,7 @@ const weatherCard = document.querySelector('.card');
 const weatherCardHeading = document.querySelector('.weather-card-heading');
 const weatherConditionText = document.querySelector('.weather-condition-text');
 const errorText = document.querySelector('.error-text');
+const content = document.querySelector('.content');
 
 weatherCard.style.display = 'none';
 
@@ -33,6 +34,13 @@ async function fetchData() {
     }
 }
 
+async function renderBackground(msg) {
+    const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=OjELug9Pvy6FiAuNEc6VUl9EZFI5ak6I&q=${msg}&limit=1&offset=0&rating=g&lang=en&bundle=messaging_non_clips`);
+
+    const GIFdata = await response.json();
+    content.style.backgroundImage = `url(${GIFdata.data[0].images.original.url})`;
+}
+
 async function displayData() {
     const data = await fetchData();
 
@@ -41,6 +49,7 @@ async function displayData() {
         weatherCard.style.display = 'flex';
         weatherCardHeading.textContent = `weather in ${data.location.name}`;
         weatherConditionText.textContent = data.forecast.forecastday[0].day.condition.text;
+        renderBackground(data.forecast.forecastday[0].day.condition.text);
     } else {
         console.log('true');
         weatherCard.style.display = 'none';
