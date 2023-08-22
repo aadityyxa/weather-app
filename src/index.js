@@ -8,6 +8,11 @@ const weatherCardHeading = document.querySelector('.weather-card-heading');
 const weatherConditionText = document.querySelector('.weather-condition-text');
 const errorText = document.querySelector('.error-text');
 const content = document.querySelector('.content');
+const pressure = document.querySelector('#pressure');
+const humidity = document.querySelector('#humidity');
+const wind = document.querySelector('#wind');
+const temp = document.querySelector('#avgtemp');
+const cor = document.querySelector('#cor');
 
 weatherCard.style.display = 'none';
 
@@ -49,6 +54,13 @@ async function displayData() {
         weatherCard.style.display = 'flex';
         weatherCardHeading.textContent = `weather in ${data.location.name}`;
         weatherConditionText.textContent = data.forecast.forecastday[0].day.condition.text;
+        wind.textContent = `${data.current.wind_kph}kph`;
+        pressure.textContent = `${data.current.pressure_in}in`;
+        humidity.textContent = `${data.current.humidity}%`;
+        temp.textContent = `${data.forecast.forecastday[0].day.avgtemp_c}C`;
+        wind.textContent = `${data.current.wind_kph}kph`;
+        cor.textContent = `${data.forecast.forecastday[0].day.daily_chance_of_rain}%`;
+
         renderBackground(data.forecast.forecastday[0].day.condition.text);
     } else {
         console.log('true');
