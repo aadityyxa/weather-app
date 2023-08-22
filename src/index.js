@@ -7,7 +7,6 @@ const weatherCard = document.querySelector('.card');
 const weatherCardHeading = document.querySelector('.weather-card-heading');
 const weatherConditionText = document.querySelector('.weather-condition-text');
 const errorText = document.querySelector('.error-text');
-// const weatherDescription = document.querySelector('weather-description');
 
 weatherCard.style.display = 'none';
 
@@ -19,13 +18,6 @@ inputField.addEventListener('input', () => {
     }
 });
 
-function displayData(obj) {
-    errorText.style.display = 'none';
-    weatherCard.style.display = 'flex';
-    weatherCardHeading.textContent = `weather in ${obj.location.name}`;
-    weatherConditionText.textContent = obj.forecast.forecastday[0].day.condition.text;
-}
-
 async function fetchData() {
     try {
         const response = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${myAPIKey}&q=${inputField.value}&days=1&aqi=no&alerts=yes`);
@@ -35,15 +27,29 @@ async function fetchData() {
             throw new Error(weatherData.error.message);
         }
 
-        displayData(weatherData);
+        return weatherData;
     } catch (err) {
+        return err;
+    }
+}
+
+async function displayData() {
+    const data = await fetchData();
+
+    if (data.location) {
+        errorText.style.display = 'none';
+        weatherCard.style.display = 'flex';
+        weatherCardHeading.textContent = `weather in ${data.location.name}`;
+        weatherConditionText.textContent = data.forecast.forecastday[0].day.condition.text;
+    } else {
+        console.log('true');
         weatherCard.style.display = 'none';
         errorText.style.display = 'block';
-        errorText.textContent = err;
+        errorText.textContent = data;
     }
 }
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    fetchData();
+    displayData();
 });
